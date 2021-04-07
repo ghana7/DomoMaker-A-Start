@@ -11,6 +11,7 @@ const signupPage = (req, res) => {
 };
 
 const logout = (req, res) => {
+  req.session.destroy();
   res.redirect('/');
 };
 
@@ -30,6 +31,8 @@ const login = (request, response) => {
     if (err || !account) {
       return res.status(401).json({ error: 'Wrong username or password' });
     }
+
+    req.session.account = Account.AccountModel.toAPI(account);
 
     return res.json({ redirect: '/maker' });
   });
@@ -60,18 +63,19 @@ const signup = (request, response) => {
 
     const newAccount = new Account.AccountModel(accountData);
 
-    const savePromise = newAccount.save();
+    newAccount.save((err, doc) => {
+      if (err) {
+        console.log(err);
 
-    savePromise.then(() => res.json({ redirect: '/maker' }));
+        if (err.code === 11000) {
+          return res.status(400).json({ error: 'Username already in use. ' });
+        }
 
-    savePromise.catch((err) => {
-      console.log(err);
-
-      if (err.code === 11000) {
-        return res.status(400).json({ error: 'Username already in use.' });
+        return res.status(400).json({ error: 'An error ocurred' });
       }
 
-      return res.status(400).json({ error: 'An error occurred' });
+      req.session.account = Account.AccountModel.toAPI(doc);
+      return res.json({ redirect: '/maker' });
     });
   });
 };
