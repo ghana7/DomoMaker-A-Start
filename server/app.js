@@ -39,7 +39,7 @@ let redisURL = {
 let redisPASS = 'ezTOXtp9gneczF0ZjzdKiQ9NNtkG6ASE';
 
 if (process.env.REDISCLOUD_URL) {
-  redisURL = url.parse(process.nextTick.REDISCLOUD_URL);
+  redisURL = url.parse(process.env.REDISCLOUD_URL);
   [, redisPASS] = redisURL.auth.split(':');
 }
 
