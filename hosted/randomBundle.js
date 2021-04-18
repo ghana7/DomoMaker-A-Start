@@ -5,12 +5,6 @@ var handleDomo = function handleDomo(e) {
   $('#domoMessage').animate({
     width: 'hide'
   }, 350);
-
-  if ($('#domoName').val() == '' || $('#domoAge').val() == '' || $('#domoWins').val() == '') {
-    handleError('RAWR! All fields are required');
-    return false;
-  }
-
   sendAjax('POST', $('#domoForm').attr('action'), $('#domoForm').serialize(), function () {
     loadDomosFromServer();
   });
@@ -22,38 +16,17 @@ var DomoForm = function DomoForm(props) {
     id: "domoForm",
     onSubmit: handleDomo,
     name: "domoForm",
-    action: "/maker",
+    action: "/makeRandom",
     method: "POST",
     className: "domoForm"
-  }, /*#__PURE__*/React.createElement("label", {
-    htmlFor: "name"
-  }, "Name: "), /*#__PURE__*/React.createElement("input", {
-    id: "domoName",
-    type: "text",
-    name: "name",
-    placeholder: "Domo Name"
-  }), /*#__PURE__*/React.createElement("label", {
-    htmlFor: "age"
-  }, "Age: "), /*#__PURE__*/React.createElement("input", {
-    id: "domoAge",
-    type: "text",
-    name: "age",
-    placeholder: "Domo Age"
-  }), /*#__PURE__*/React.createElement("label", {
-    htmlFor: "wins"
-  }, "Wins: "), /*#__PURE__*/React.createElement("input", {
-    id: "domoWins",
-    type: "text",
-    name: "wins",
-    placeholder: "Domo Wins"
-  }), /*#__PURE__*/React.createElement("input", {
+  }, /*#__PURE__*/React.createElement("input", {
     type: "hidden",
     name: "_csrf",
     value: props.csrf
   }), /*#__PURE__*/React.createElement("input", {
     className: "makeDomoSubmit",
     type: "submit",
-    value: "Make Domo"
+    value: "Make Random Domo"
   }));
 };
 
@@ -98,7 +71,7 @@ var loadDomosFromServer = function loadDomosFromServer() {
 var setup = function setup(csrf) {
   ReactDOM.render( /*#__PURE__*/React.createElement(DomoForm, {
     csrf: csrf
-  }), document.querySelector("#makeDomo"));
+  }), document.querySelector("#getRandomDomo"));
   ReactDOM.render( /*#__PURE__*/React.createElement(DomoList, {
     domos: []
   }), document.querySelector("#domos"));
